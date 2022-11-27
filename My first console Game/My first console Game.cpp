@@ -8,6 +8,8 @@
 
 using namespace std;
 
+
+
 class character
 {
 private:
@@ -28,6 +30,12 @@ private:
 	int lvl;		//Уровень
 	
 	int ass = 0;    //Ассортимент
+
+	int pistol = 0;
+	
+	int shGun = 0;
+	
+	int ak = 0;
 
 	vector<string> inventory = { "камень", "доска", "бревно" };
 
@@ -63,7 +71,7 @@ public:
 		
 		luck = rand() % 76;
 		
-		gold = 20;
+		gold = 2000;
 		
 		apt = 5;
 		
@@ -172,25 +180,101 @@ public:
 		printInfo();
 	}
 	
-	void getTraid()			// Тарговля в магазине
+	void getGunTraid()			// Тарговля в магазине
 	{
 		printInfo();
+
+
 		cout << "You went to the <Goblin shop>";
+		cout << "\nассортимент:" << endl;
+		if (pistol == 0)
+			cout << "1 - пистолет(50):13 золота" << endl;
+		
+		if (shGun == 0)
+			cout << "2 - дробовик(75):25 золота" << endl;
+			
+		if (ak == 0)
+			cout << "3 - AK-47	(100):50 золота" << endl;
+			
+		if (ass == 1)
+			cout << "4 - патроны(25) : 5 gold" << endl;
+		int ng;
+		cin >> ng;
+
+		if (ng == 1)
+		{
+			if (pistol == 0)
+			{
+				if (gold >= 5)
+				{
+					strength += 25;
+					gold -= 5;
+					cout << "Персонаж купил пистолет" << endl;
+					pistol += 1;
+				}
+				else
+					cout << "нет денег" << endl;
+			}
+		}
+		else
+			if (ng == 2)
+			{
+				if (shGun == 0)
+				{
+					if (gold >= 10)
+					{
+						strength += 50;
+						gold -= 10;
+						cout << "Персонаж купил дробовик" << endl;
+						shGun += 1;
+					}
+					else
+						cout << "нет денег" << endl;
+				}
+			}
+			else
+				if (ng == 3)
+				{
+					if (ak == 0)
+						if (gold >= 15)
+						{
+							strength += 75;
+							gold -= 15;
+							cout << "Персонаж купил AK-47" << endl;
+							ak += 1;
+						}
+						else
+							cout << "нет денег" << endl;
+				}
+				else
+					if (ng == 4)
+					{
+						if (ass == 1)
+						{
+							if (gold >= 5)
+							{
+								strength += 25;
+								gold -= 5;
+								cout << "Персонаж докупил патронов" << endl;
+							}
+							else 
+								cout << "нет денег" << endl;
+						}
+					}
+
+	}
+
+	void potionTraider()
+	{
+		printInfo();
 		cout << "\nассортимент:" << endl;
 		cout << "1 -    аптечка:  5 золота" << endl;
 		cout << "2 - залье удачи:10 золота" << endl;
-		cout << "7 - Уровень +1:   "<< lvl * 10 << " золота "<< endl;
-		if (ass == 0)
-		{
-			cout << "3 - пистолет(50):13 золота" << endl;
-			cout << "4 - дробовик(75):25 золота" << endl;
-			cout << "5 - AK-47	(100):50 золота" << endl;
-		}
-		else
-			cout << "6 - Putrons(25) : 5 gold" << endl;
-		int ng;
-		cin >> ng;
-		if (ng == 1)
+		cout << "3 - Уровень +1:   " << lvl * 10 << " золота " << endl;
+
+		int mg1;
+		cin >> mg1;
+		if (mg1 == 1)
 		{
 			if (gold >= 5)
 			{
@@ -202,7 +286,7 @@ public:
 				cout << "нет денег" << endl;
 		}
 		else
-			if (ng == 2)
+			if (mg1 == 2)
 			{
 				if (gold >= 5)
 				{
@@ -214,70 +298,19 @@ public:
 					cout << "нет денег" << endl;
 			}
 			else
-				if (ng == 3)
+				if (mg1 == 3)
 				{
-					if (ass == 0)
+					if (gold >= lvl * 10)
 					{
-						if (gold >= 5)
-						{
-							strength += 25;
-							gold -= 5;
-							cout << "Персонаж купил пистолет" << endl;
-							ass += 1;
-						}
-						else
-							cout << "нет денег" << endl;
-					}
-				}
-				else
-					if (ng == 4)
-					{
-						if (ass == 0)
-						{
-							if (gold >= 10)
-							{
-								strength += 50;
-								gold -= 10;
-								cout << "Персонаж купил дробовик" << endl;
-								ass += 1;
-							}
-							else
-								cout << "нет денег" << endl;
-						}
+						lvl += 1;
+						gold -= lvl * 10;
+						cout << "ты купил 1 уровень" << endl;
 					}
 					else
-						if (ng == 5)
-						{
-							if (ass == 0)
-								if (gold >= 15)
-								{
-									strength += 75;
-									gold -= 15;
-									cout << "Персонаж купил AK-47" << endl;
-									ass += 1;
-								}
-								else
-									cout << "нет денег" << endl;
-						}
-						else
-							if (ng == 6)
-							{
-								strength += 25;
-							}
-							else
-							{
-								if (ng == 7)
-								{
-									if (gold >= lvl * 10)
-									{
-										lvl += 1;
-										gold -= lvl * 10;
-										cout << "ты купил 1 уровень" << endl;
-									}
-									else
-										cout << "нет денег" << endl;
-								}
-							}
+						cout << "нет денег" << endl;
+				}
+
+
 	}
 	
 	void getMinusGold(int mg)	// Забор золота
@@ -455,48 +488,66 @@ public:
 		getOpening();
 		getOpening();
 	}
+
+	void start()
+	{
+		int actn;
+		while (true)
+		{
+			printInfo();
+			cout << "Выбери действие:" << endl << "1 - пещера(10)" << endl << "2 - сражение(10)" << endl	//Список действий
+				<< "3 - торговля" << endl << "4 - Выход" << endl << "5 - Действие" << endl;
+			cin >> actn;
+			if (actn == 1)
+			{
+				system("cls");
+				cave();
+			}
+			else
+				if (actn == 2)
+				{
+					system("cls");
+					getwin();
+				}
+				else
+					if (actn == 3)
+					{
+						system("cls");;
+						choiceShop();
+					}
+					else
+						if (actn == 4)
+							for (;;);
+						else
+							if (actn == 5)
+							{
+								system("cls");
+								action();
+							}
+
+		}
+
+	}
+
+	void choiceShop()
+	{
+		cout << "1 - potion" << endl << "2 - gun" << endl;
+		int shops;
+		cin >> shops;
+		if (shops == 1)
+			potionTraider();
+		else
+			if (shops == 2)
+				getGunTraid();
+	}
+
 };
 
 void main()
 {
 	setlocale(LC_ALL, "russian");
 	srand(time(NULL));
-	int actn;
 	character a(200, rand() % 200);
 	cout << "Игра" << endl;
-	while (true)
-	{
-		a.printInfo();
-		cout << "Выбери действие:" << endl << "1 - пещера(10)" << endl << "2 - сражение(10)" << endl	//Список действий
-		 << "3 - торговля" << endl << "4 - Выход" << endl << "5 - Действие" << endl;
-		cin >> actn;
-		if (actn == 1)
-		{
-			system("cls");
-			a.cave();
-		}
-		else
-			if (actn == 2)
-			{
-				system("cls");
-				a.getwin();
-			}
-			else
-				if (actn == 3)
-				{
-					system("cls");;
-					a.getTraid();
-				}
-				else
-					if (actn == 4)
-						for (;;);
-					else
-						if (actn == 5)
-						{
-							system("cls");
-							a.action();
-						}
-
-	}
-	
+	a.start();
 }
